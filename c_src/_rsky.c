@@ -163,6 +163,16 @@ static PyObject *_getf(PyObject *self, PyObject *args)
 }
 
 
+static PyObject *_openmp_enabled(PyObject *self, PyObject *unused)
+{
+#if defined(_OPENMP) && !defined(_OPENACC)
+	Py_RETURN_TRUE;
+#else
+	Py_RETURN_FALSE;
+#endif
+}
+
+
 static char _rsky_doc[] = """ This module computes the distance between the centers of the \
 star and the planet in the plane of the sky.  This parameter is \
 denoted r_sky = sqrt(x^2 + y^2) in the Seager Exoplanets book \
@@ -178,7 +188,11 @@ BM 1/18/16 """;
 
 
 static PyMethodDef _rsky_methods[] = {
-  {"_rsky", _rsky,METH_VARARGS,_rsky_doc},{"_getf", _getf,METH_VARARGS,_getf_doc},{NULL}};
+  {"_rsky", _rsky, METH_VARARGS, _rsky_doc},
+  {"_getf", _getf, METH_VARARGS, _getf_doc},
+  {"_openmp_enabled", _openmp_enabled, METH_NOARGS, NULL},
+  {NULL}
+};
 
 
 #if PY_MAJOR_VERSION >= 3
